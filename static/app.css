@@ -1,0 +1,29 @@
+#boggle_heading {
+    font-size: 74px;
+    font-family: 'Fredoka One', cursive;
+    color: blue;
+}
+
+.char {
+    background-color: rgba(0, 97, 118, 0.626);
+}
+
+#flash-mgs {
+    font-weight: 400;
+    font-size: 1.5em;
+    width: 300px;
+    margin-left: 200px;
+    text-align: center;
+}
+
+.success {
+    background-color: rgba(38, 102, 52, 0.577);
+}
+
+.game-board {
+    width: 50%;
+}
+
+.game-list {
+    width: 50%;
+}

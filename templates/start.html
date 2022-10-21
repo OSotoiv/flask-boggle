@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block heading%}
+<div class="container text-center mb-5">
+    <h1 id="boggle_heading">Boggle Game Start</h1>
+</div>
+{% endblock %}
+
+
+{% block content%}
+<div class="d-flex flex-row">
+    <div class="d-flex flex-column align-items-center game-board">
+        {% for row in board%}
+        <div class="d-flex flex-column game-board mb-3">
+            <div class="row">
+                <div class="btn-group" role="group">
+                    {% for char in row %}
+                    <button type="button" class="btn char p-2">{{char}}</button>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="d-flex flex-column align-items-center game-list">
+        <ul id="list">
+
+        </ul>
+    </div>
+</div>
+<div class="d-flex justify-content-center">
+    <form action="#" id="guess_form">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <input type="text" id="guess" class="form-control" name="guess">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Guess</button>
+            </div>
+        </div>
+    </form>
+</div>
+{%endblock%}
+
+{% block script %}
+<script src="https://unpkg.com/axios/dist/axios.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="/static/app.js"></script>
+{% endblock%}
