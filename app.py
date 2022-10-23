@@ -42,7 +42,6 @@ def guess():
     json_data = request.get_json()
     data = json.loads(json_data)
     word = data.get('guess')
-    print(word)
     board = session.get('gameboard')
     res = boggle_game.check_valid_word(board, word)
     if res == 'ok':
@@ -51,7 +50,6 @@ def guess():
             return jsonify({'result': 'already used'})
         correct_list.append(word)
         session['correct'] = correct_list
-        print(correct_list)
     return jsonify({'result': res})
 
 

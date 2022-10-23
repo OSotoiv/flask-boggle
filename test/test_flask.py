@@ -28,15 +28,19 @@ class FlaskTests(TestCase):
             self.assertEqual(session['correct'], [])
             self.assertEqual(len(session['gameboard']), 5)
 
-    def test_about_route():
+    def test_about_route(self):
         with app.test_client() as client:
             res = client.get('/about')
             html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            self.assertIn('<h1 id="boggle_heading">About</h1>', html)
 
-    def test_dictionary_route():
+    def test_dictionary_route(self):
         with app.test_client() as client:
             res = client.get('/dictionary')
             html = res.get_data(as_text=True)
+            self.assertEqual(res.status_code, 200)
+            self.assertIn('<h1 id="boggle_heading">Dictionary</h1>', html)
 
     def test_guess_route(self):
         """test the submiting the users guess to /guess (json) not (form)"""
@@ -82,18 +86,22 @@ class FlaskTests(TestCase):
             self.assertEqual(len(session['correct']), 1)
 
     def test_record_score_high_score(self):
-        """test the submiting the users guess to /guess (json) not (form)"""
-        # this section does not test updating high_score
         with app.test_client() as client:
             with client.session_transaction() as change_session:
                 change_session['active_game'] = True
                 change_session['high_score'] = 2
-                change_session['correct'] = []
+                change_session['correct'] = ['vote', 'gum']
                 change_session['gameboard'] = self.CONTROL_BOARD
-        res1 = client.post('/guess', json='{"guess": "vote"}')
-        res2 = client.post('/guess', json='{"guess": "gum"}')
-        res3 = client.post('/guess', json='{"guess": "bug"}')
-        res4 = client.post('/record_score')
-        data = res4.json
-        self.assertEqual(data.get('high_score'), 3)
-        self.assertEqual(session['high_score'], '3')
+            # at this point /record_score determins that 2 correct answers is not a new high score
+            rec_res1 = client.post('/record_score')
+            data1 = rec_res1.json
+            # /record_score returns json{high_score} set to 0 which is Falsy
+            self.assertFalse(data1.get('high_score'))
+            # user now has 3 which is the new high score
+            res = client.post('/guess', json='{"guess": "bug"}')
+            self.assertEqual(len(session['correct']), 3)
+
+            rec_res = client.post('/record_score')
+            data = rec_res.json
+            self.assertEqual(data.get('high_score'), 3)
+            self.assertEqual(session['high_score'], 3)
