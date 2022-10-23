@@ -41,7 +41,7 @@ class Boggle_Tests(TestCase):
             self.CONTROL_BOARD, 'voter'), 'not-on-board')
 
     def test_find(self):
-        """test return value from find function. isOnTheGameBoard=True else False"""
+        """test the return value from find() function. isOnTheGameBoard=True else False"""
         # MUG and HUG should be capitalized to match the game board letters.*boggle.py line36*
         self.assertTrue(self.boggle_instance.find(self.CONTROL_BOARD, 'MUG'))
         self.assertFalse(self.boggle_instance.find(self.CONTROL_BOARD, 'HUG'))

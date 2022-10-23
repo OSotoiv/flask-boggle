@@ -2,6 +2,7 @@ from crypt import methods
 from boggle import Boggle
 from flask import Flask, request, render_template, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
+import json
 
 
 app = Flask(__name__)
@@ -24,22 +25,24 @@ def home():
     return render_template('game_on.html', board=board)
 
 
-# @app.route('/active_game')
-# def active_game():
-#     board = session['gameboard']
-#     correct_list = session['correct']
-#     return render_template('game_on.html', board=board, correct_list=correct_list)
-
-
 @app.route('/about')
 def about():
     return render_template('about.html')
 
 
+@app.route('/dictionary')
+def dictionary():
+    return render_template('dictionary.html')
+
+
 @app.route('/guess', methods=["POST"])
 def guess():
+    """handles users submitting word/guess"""
     # jsonify() will set Respons Header Content-Type -> application/json
-    word = request.get_json().get('guess')
+    json_data = request.get_json()
+    data = json.loads(json_data)
+    word = data.get('guess')
+    print(word)
     board = session.get('gameboard')
     res = boggle_game.check_valid_word(board, word)
     if res == 'ok':
@@ -52,13 +55,9 @@ def guess():
     return jsonify({'result': res})
 
 
-@app.route('/dictionary')
-def dictionary():
-    return render_template('dictionary.html')
-
-
 @app.route('/record_score', methods=["POST"])
 def record_score():
+    """checks for highscore and records it to the session"""
     current_score = len(session['correct'])
     high_score = session['high_score']
     if int(current_score) > int(high_score):
