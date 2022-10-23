@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block heading%}
 <div class="container text-center mb-5">
-    <h1 id="boggle_heading">Boggle Game Start</h1>
+    <h1 id="boggle_heading">Boggle Game</h1>
 </div>
 {% endblock %}
 
@@ -31,18 +31,12 @@
     <form action="#" id="guess_form">
         <div class="row g-3 align-items-center">
             <div class="col-auto">
-                <input type="text" id="guess" class="form-control" name="guess">
+                <input type="text" id="guess" class="form-control" name="guess" disabled>
             </div>
             <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Guess</button>
+                <button type="submit" class="btn btn-primary disabled" id="guess_btn">Guess</button>
             </div>
         </div>
     </form>
 </div>
 {%endblock%}
-
-{% block script %}
-<script src="https://unpkg.com/axios/dist/axios.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script src="/static/app.js"></script>
-{% endblock%}
